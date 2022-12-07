@@ -1,4 +1,4 @@
-use std::{env, error::Error, str::FromStr};
+use std::str::FromStr;
 
 use advent_of_code_2022::{read_file_and_get_input, Problem};
 

@@ -1,5 +1,3 @@
-use std::ops::RangeInclusive;
-
 use advent_of_code_2022::{read_file_and_get_input, Problem};
 
 fn main() {

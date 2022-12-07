@@ -1,9 +1,6 @@
 #![feature(iter_array_chunks)]
 
-use std::{
-    collections::{HashMap, HashSet},
-    error::Error,
-};
+use std::collections::{HashMap, HashSet};
 
 use advent_of_code_2022::{read_file_and_get_input, Problem};
 
