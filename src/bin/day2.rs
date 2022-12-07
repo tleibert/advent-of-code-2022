@@ -1,4 +1,4 @@
-use std::{cmp::Ordering, env, error::Error, num::ParseIntError, str::FromStr, string::ParseError};
+use std::{env, error::Error, str::FromStr};
 
 /// A possible move in rock paper scissors
 #[derive(Eq, PartialEq, Clone, Copy)]
