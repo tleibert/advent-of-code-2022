@@ -22,7 +22,7 @@ fn usage_exit() -> ! {
     // print usage message
     println!(
         "Usage: {} [1,2] <path to input file>",
-        env::args().nth(0).unwrap()
+        env::args().next().unwrap()
     );
     exit(1);
 }

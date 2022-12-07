@@ -11,10 +11,10 @@ fn main() {
     println!("Answer: {answer}");
 }
 
-fn problem_1(contents: &str) -> i32 {
+fn problem_1(_contents: &str) -> i32 {
     0
 }
 
-fn problem_2(contents: &str) -> i32 {
+fn problem_2(_contents: &str) -> i32 {
     0
 }

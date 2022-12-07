@@ -8,7 +8,7 @@ struct CrateStack {
 
 impl CrateStack {
     fn from_initial(input: &str) -> Self {
-        let relevant_lines: Vec<&str> = input.lines().take_while(|line| line.len() != 0).collect();
+        let relevant_lines: Vec<&str> = input.lines().take_while(|line| !line.is_empty()).collect();
 
         let indices: Vec<usize> = relevant_lines[relevant_lines.len() - 1]
             .char_indices()
@@ -56,7 +56,7 @@ impl CrateStack {
     fn get_top_crates(&self) -> Vec<char> {
         self.crates
             .iter()
-            .map(|stack| *stack.get(stack.len() - 1).unwrap_or(&' '))
+            .map(|stack| *stack.last().unwrap_or(&' '))
             .collect()
     }
 }

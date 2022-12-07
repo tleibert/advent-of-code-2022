@@ -10,7 +10,7 @@ fn main() {
         Problem::Two => problem_2(&contents),
     };
 
-    println!("Answer: {}", result);
+    println!("Answer: {result}");
 }
 
 fn calories_by_elves(contents: &str) -> BinaryHeap<i32> {
