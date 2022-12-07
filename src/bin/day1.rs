@@ -1,19 +1,13 @@
 use std::collections::BinaryHeap;
-use std::env;
+
+use advent_of_code_2022::{read_file_and_get_input, Problem};
 
 fn main() {
     // get the problem to run and the input file
-
-    let problem: i32 = env::args().nth(1).unwrap().parse().unwrap();
-    let filename: &str = &env::args().nth(2).unwrap();
-
-    let contents =
-        std::fs::read_to_string(filename).expect("Something went wrong reading the file");
-
+    let (problem, contents) = read_file_and_get_input();
     let result = match problem {
-        1 => problem_1(&contents),
-        2 => problem_2(&contents),
-        _ => panic!("Unknown problem"),
+        Problem::One => problem_1(&contents),
+        Problem::Two => problem_2(&contents),
     };
 
     println!("Answer: {}", result);

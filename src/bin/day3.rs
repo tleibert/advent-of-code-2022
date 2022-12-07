@@ -2,15 +2,13 @@
 
 use std::{
     collections::{HashMap, HashSet},
-    env,
     error::Error,
 };
 
-fn main() -> Result<(), Box<dyn Error>> {
-    let problem: i32 = env::args().nth(1).unwrap().parse()?;
-    let filename: &str = &env::args().nth(2).unwrap();
+use advent_of_code_2022::{read_file_and_get_input, Problem};
 
-    let contents = std::fs::read_to_string(filename)?;
+fn main() {
+    let (problem, contents) = read_file_and_get_input();
     let mut priority_map = HashMap::new();
     for (i, letter) in ('a'..='z').enumerate() {
         priority_map.insert(letter, (i + 1) as i32);
@@ -20,18 +18,11 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
 
     let result = match problem {
-        1 => problem_1(&contents, &priority_map),
-        2 => problem_2(&contents, &priority_map),
-        _ => panic!("Unknown problem"),
+        Problem::One => problem_1(&contents, &priority_map),
+        Problem::Two => problem_2(&contents, &priority_map),
     };
 
-    println!("Answer: {}", result);
-
-    let bruh = "abcdefgh";
-    let (h1, h2) = bruh.split_at(bruh.len() / 2);
-    println!("Half 1: {h1}, Half 2: {h2}");
-
-    Ok(())
+    println!("Answer: {result}");
 }
 
 fn problem_1(contents: &str, priority_map: &HashMap<char, i32>) -> i32 {
