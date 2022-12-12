@@ -30,9 +30,9 @@ fn process_input(contents: &str) -> (HashMap<PathBuf, usize>, HashSet<PathBuf>) 
     let mut dirs = HashSet::new();
     dirs.insert(cwd.clone());
     for line in contents.lines() {
-        if line.starts_with("$") {
+        if line.starts_with('$') {
             // command
-            let line = line.strip_prefix("$").unwrap().trim_start();
+            let line = line.strip_prefix('$').unwrap().trim_start();
             if line.starts_with("cd") {
                 let dirname = line.split_whitespace().nth(1).unwrap();
                 if dirname == ".." {
