@@ -56,23 +56,36 @@ struct Monkey {
     operation: Operation,
     decision: Decision,
     items_inspected: usize,
-    id: usize,
 }
 
 impl Monkey {
-    fn new(id: usize, items: Vec<usize>, operation: Operation, decision: Decision) -> Self {
+    fn new(items: Vec<usize>, operation: Operation, decision: Decision) -> Self {
         Self {
             items,
             operation,
             decision,
             items_inspected: 0,
-            id,
         }
     }
 
     fn take_turn(&mut self, arr_a: &mut Vec<usize>, arr_b: &mut Vec<usize>) {
         for &item in &self.items {
             let new = self.apply_operation(item) / 3;
+
+            if new % self.decision.modulus == 0 {
+                arr_a.push(new);
+            } else {
+                arr_b.push(new);
+            }
+
+            self.items_inspected += 1;
+        }
+        self.items.clear();
+    }
+
+    fn take_turn_2(&mut self, arr_a: &mut Vec<usize>, arr_b: &mut Vec<usize>) {
+        for &item in &self.items {
+            let new = self.apply_operation(item);
 
             if new % self.decision.modulus == 0 {
                 arr_a.push(new);
@@ -99,13 +112,7 @@ impl FromStr for Monkey {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut lines = s.lines();
-        let id = lines
-            .next()
-            .ok_or(())?
-            .trim_start_matches("Monkey ")
-            .trim_end_matches(":")
-            .parse()
-            .map_err(|_| ())?;
+        lines.next();
         let items = lines
             .next()
             .ok_or(())?
@@ -146,7 +153,7 @@ impl FromStr for Monkey {
 
         let decision = Decision::new(test, option_a, option_b);
 
-        Ok(Monkey::new(id, items, op, decision))
+        Ok(Monkey::new(items, op, decision))
     }
 }
 
@@ -178,6 +185,26 @@ impl MonkeyGroup {
 
             self.monkeys[monkey_a].items.extend(array_a.iter());
             self.monkeys[monkey_b].items.extend(array_b.iter());
+            array_a.clear();
+            array_b.clear();
+        }
+    }
+
+    fn play_round_2(&mut self) {
+        let mut array_a = Vec::new();
+        let mut array_b = Vec::new();
+
+        for i in 0..self.monkeys.len() {
+            self.monkeys[i].take_turn_2(&mut array_a, &mut array_b);
+            let monkey_a = self.monkeys[i].decision.choice_a;
+            let monkey_b = self.monkeys[i].decision.choice_b;
+
+            self.monkeys[monkey_a]
+                .items
+                .extend(array_a.iter().map(|item| item % self.common_multiple));
+            self.monkeys[monkey_b]
+                .items
+                .extend(array_b.iter().map(|item| item % self.common_multiple));
             array_a.clear();
             array_b.clear();
         }
@@ -220,5 +247,19 @@ fn problem_1(contents: &str) -> usize {
 }
 
 fn problem_2(contents: &str) -> usize {
-    0
+    let mut monkeys = Vec::new();
+    for mut lines in &contents.lines().chunks(7) {
+        let line = lines.join("\n");
+        let monkey: Monkey = line.parse().unwrap();
+        monkeys.push(monkey);
+    }
+
+    let mut monkey_group = MonkeyGroup::new(monkeys);
+    println!("Common multiple {}", monkey_group.common_multiple);
+
+    for _ in 0..10000 {
+        monkey_group.play_round_2();
+    }
+
+    monkey_group.monkey_business()
 }
